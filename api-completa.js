@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const { Client } = require("pg");
 
@@ -7,14 +8,13 @@ const port = 3000;
 app.use(express.json());
 
 const client = new Client({
-  user: "postgres",
-  host: "/var/run/postgresql",
-  database: "meu_banco",
-  password: "",
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
-client.connect();
+client.connect()
+  .then(() => console.log("Conectado ao Neon"))
+  .catch(err => console.error("Erro de conexão:", err.message));
 
 app.get("/usuarios", async (req, res) => {
   const result = await client.query("SELECT * FROM usuarios ORDER BY id");
