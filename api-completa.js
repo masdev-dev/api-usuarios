@@ -55,7 +55,9 @@ app.delete("/usuarios/:id", async (req, res) => {
   if (result.rows.length === 0) return res.status(404).json({ erro: "Usuário não encontrado" });
   res.json({ mensagem: "Usuário removido", usuario: result.rows[0] });
 });
-
+app.get("/", (req, res) => {
+  res.send("API está rodando!");
+});
 app.listen(port, () => {
   console.log(`API rodando em http://localhost:${port}`);
 });
